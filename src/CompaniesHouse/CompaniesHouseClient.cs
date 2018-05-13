@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using CompaniesHouse.Request;
 using CompaniesHouse.Response.CompanyFiling;
 using CompaniesHouse.Response.CompanyProfile;
+using CompaniesHouse.Response.DocumentMetadata;
 using CompaniesHouse.Response.Insolvency;
 using CompaniesHouse.Response.Officers;
 using CompaniesHouse.Response.Search.AllSearch;
@@ -22,18 +23,23 @@ namespace CompaniesHouse
         private readonly ICompaniesHouseCompanyFilingHistoryClient _companiesHouseCompanyFilingHistoryClient;
         private readonly ICompaniesHouseOfficersClient _companiesHouseOfficersClient;
         private readonly ICompaniesHouseCompanyInsolvencyInformationClient _companiesHouseCompanyInsolvencyInformationClient;
+        private readonly ICompaniesHouseDocumentMetadataClient _companiesHouseDocumentMetadataClient;
         private readonly HttpClient _httpClient;
+        private readonly HttpClient _documentHttpClient;
 
         public CompaniesHouseClient(ICompaniesHouseSettings settings)
         {
-            var httpClientFactory = new HttpClientFactory(settings);
-            _httpClient = httpClientFactory.CreateHttpClient();
+            var companiesHouseHttpClientFactory = new CompaniesHouseHttpClientFactory(settings);
+            _httpClient = companiesHouseHttpClientFactory.CreateHttpClient();
+            var companiesHouseDocumentHttpClientFactory = new CompaniesHouseDocumentHttpClientFactory(settings);
+            _documentHttpClient = companiesHouseDocumentHttpClientFactory.CreateHttpClient();
 
             _companiesHouseSearchClient = new CompaniesHouseSearchClient(_httpClient, new SearchUriBuilderFactory());
             _companiesHouseCompanyProfileClient = new CompaniesHouseCompanyProfileClient(_httpClient, new CompanyProfileUriBuilder());
             _companiesHouseCompanyFilingHistoryClient = new CompaniesHouseCompanyFilingHistoryClient(_httpClient, new CompanyFilingHistoryUriBuilder());
             _companiesHouseOfficersClient = new CompaniesHouseOfficersClient(_httpClient, new OfficersUriBuilder());
             _companiesHouseCompanyInsolvencyInformationClient = new CompaniesHouseCompanyInsolvencyInformationClient(_httpClient);
+            _companiesHouseDocumentMetadataClient = new CompaniesHouseDocumentMetadataClient(_documentHttpClient, new DocumentMetadataUriBuilder());
         }
 
         public Task<CompaniesHouseClientResponse<CompanySearch>> SearchCompanyAsync(SearchRequest request, CancellationToken cancellationToken = default(CancellationToken))
@@ -76,9 +82,16 @@ namespace CompaniesHouse
             return _companiesHouseCompanyInsolvencyInformationClient.GetCompanyInsolvencyInformationAsync(companyNumber, cancellationToken);
         }
 
+        public Task<CompaniesHouseClientResponse<DocumentMetadata>> GetDocumentMetadataAsync(string documentId, CancellationToken cancellationToken)
+        {
+            return _companiesHouseDocumentMetadataClient.GetDocumentMetadataAsync(documentId, cancellationToken);
+        }
+
         public void Dispose()
         {
             _httpClient.Dispose();
+            _documentHttpClient.Dispose();
         }
+
     }
 }

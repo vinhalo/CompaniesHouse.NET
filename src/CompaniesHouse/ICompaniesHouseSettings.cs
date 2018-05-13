@@ -6,6 +6,8 @@ namespace CompaniesHouse
     {
         Uri BaseUri { get; }
 
+        Uri DocumentBaseUri { get; }
+
         string ApiKey { get; }
     }
 }

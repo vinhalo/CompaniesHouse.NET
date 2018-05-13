@@ -48,7 +48,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CompaniesHouseClientTestFixture.cs" />
     <Compile Include="Tests\CompanyInsolvencyInformationTests\CompanyInsolvencyInformationTests.cs" />
+    <Compile Include="Tests\DocumentMetadataTests\DocumentMetadataTestsValid.cs" />
     <Compile Include="Tests\OfficerTests\OfficersTestBase.cs" />
     <Compile Include="Tests\OfficerTests\OfficersTestsInvalid.cs" />
     <Compile Include="Tests\OfficerTests\OfficersTestsValid.cs" />
@@ -78,6 +80,7 @@
       <Name>CompaniesHouse</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

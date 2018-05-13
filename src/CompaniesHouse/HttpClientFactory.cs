@@ -1,16 +1,41 @@
-﻿using System.Net;
+﻿using System;
+using System.Net;
 using System.Net.Http;
 using CompaniesHouse.DelegatingHandlers;
 
 namespace CompaniesHouse
 {
-    public class HttpClientFactory : IHttpClientFactory
+    public class CompaniesHouseDocumentHttpClientFactory : HttpClientFactory
     {
-        private readonly ICompaniesHouseSettings _settings;
-
-        public HttpClientFactory(ICompaniesHouseSettings settings)
+        public CompaniesHouseDocumentHttpClientFactory(ICompaniesHouseSettings settings) : base(settings)
         {
-            _settings = settings;
+        }
+
+        protected override Uri GetBaseUri()
+        {
+            return Settings.DocumentBaseUri;
+        }
+    }
+
+    public class CompaniesHouseHttpClientFactory : HttpClientFactory
+    {
+        public CompaniesHouseHttpClientFactory(ICompaniesHouseSettings settings) : base(settings)
+        {
+        }
+
+        protected override Uri GetBaseUri()
+        {
+            return Settings.BaseUri;
+        }
+    }
+
+    public abstract class HttpClientFactory : IHttpClientFactory
+    {
+        protected readonly ICompaniesHouseSettings Settings;
+
+        protected HttpClientFactory(ICompaniesHouseSettings settings)
+        {
+            Settings = settings;
         }
 
         public HttpClient CreateHttpClient()
@@ -20,18 +45,20 @@ namespace CompaniesHouse
                 AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate
             };
 
-            var companiesHouseAuthorizationHandler = new CompaniesHouseAuthorizationHandler(_settings.ApiKey)
+            var companiesHouseAuthorizationHandler = new CompaniesHouseAuthorizationHandler(Settings.ApiKey)
             {
                 InnerHandler = httpClientHandler
             };
 
             var httpClient = new HttpClient(companiesHouseAuthorizationHandler)
             {
-                BaseAddress = _settings.BaseUri
+                BaseAddress = GetBaseUri()
             };
 
 
             return httpClient;
         }
+
+        protected abstract Uri GetBaseUri();
     }
 }
