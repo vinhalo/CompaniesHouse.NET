@@ -24,7 +24,15 @@ namespace CompaniesHouse.Tests.ResourceBuilders
       }},
       ""last_accounts"" : {{
          ""made_up_to"" : ""{_companyProfile.Accounts.LastAccounts.MadeUpTo.ToString("yyyy-MM-dd")}"",
-         ""type"" : ""{_companyProfile.Accounts.LastAccounts.Type}""
+         ""type"" : ""{_companyProfile.Accounts.LastAccounts.Type}"",
+         ""period_end_on"" : ""{_companyProfile.Accounts.LastAccounts.PeriodEndOn:yyyy-MM-dd}"",
+         ""period_start_on"" : ""{_companyProfile.Accounts.LastAccounts.PeriodStartOn:yyyy-MM-dd}""
+      }},
+      ""next_accounts"": {{
+         ""due_on"" : ""{_companyProfile.Accounts.NextAccounts.DueOn:yyyy-MM-dd}"",
+         ""period_end_on"" : ""{_companyProfile.Accounts.NextAccounts.PeriodEndOn:yyyy-MM-dd}"",
+         ""period_start_on"" : ""{_companyProfile.Accounts.NextAccounts.PeriodStartOn:yyyy-MM-dd}"",
+         ""overdue"" : ""{_companyProfile.Accounts.NextAccounts.Overdue.ToString().ToLower()}""
       }},
       ""next_due"" : ""{_companyProfile.Accounts.NextDue.ToString("yyyy-MM-dd")}"",
       ""next_made_up_to"" : ""{_companyProfile.Accounts.NextMadeUpTo.ToString("yyyy-MM-dd")}"",
@@ -35,6 +43,11 @@ namespace CompaniesHouse.Tests.ResourceBuilders
       ""next_due"" : ""{_companyProfile.AnnualReturn.NextDue.ToString("yyyy-MM-dd")}"",
       ""next_made_up_to"" : ""{_companyProfile.AnnualReturn.NextMadeUpTo.ToString("yyyy-MM-dd")}"",
       ""overdue"" : {_companyProfile.AnnualReturn.Overdue.ToString().ToLower()}
+   }},
+    ""branch_company_details"" : {{
+      ""business_activity"" : ""{_companyProfile.BranchCompanyDetails.BusinessActivity}"",
+      ""parent_company_name"" : ""{_companyProfile.BranchCompanyDetails.ParentCompanyName}"",
+      ""parent_company_number"" : ""{_companyProfile.BranchCompanyDetails.ParentCompanyNumber}""
    }},
    ""can_file"" : {_companyProfile.CanFile.ToString().ToLower()},
    ""company_name"" : ""{_companyProfile.CompanyName}"",
@@ -48,7 +61,7 @@ namespace CompaniesHouse.Tests.ResourceBuilders
       ""overdue"" : ""{_companyProfile.ConfirmationStatement.Overdue.ToString().ToLower()}""
    }},
    ""date_of_creation"" : ""{_companyProfile.DateOfCreation.ToString("yyyy-MM-dd")}"",
-   ""date_of_dissolution"" : ""{_companyProfile.DateOfDissolution.ToString("yyyy-MM-dd")}"",
+   ""date_of_cessation"" : ""{_companyProfile.DateOfCessation.ToString("yyyy-MM-dd")}"",
    ""etag"" : ""{_companyProfile.ETag}"",
    ""has_been_liquidated"" : {_companyProfile.HasBeenLiquidated.ToString().ToLower()},
    ""has_charges"" : {_companyProfile.HasCharges.ToString().ToLower()},
@@ -56,6 +69,16 @@ namespace CompaniesHouse.Tests.ResourceBuilders
    ""is_community_interest_company"" : {_companyProfile.IsCommunityInterestCompany.ToString().ToLower()},
    ""jurisdiction"" : ""{_companyProfile.Jurisdiction}"",
    ""last_full_members_list_date"" : ""{_companyProfile.LastFullMembersListDate.ToString("yyyy-MM-dd")}"",
+   ""links"" : {{
+      ""charges"" : ""{_companyProfile.Links.Charges}"",
+      ""filing_history"" : ""{_companyProfile.Links.FilingHistory}"",
+      ""insolvency"" : ""{_companyProfile.Links.Insolvency}"",
+      ""officers"" : ""{_companyProfile.Links.Officers}"",
+      ""persons_with_significant_control"" : ""{_companyProfile.Links.PersonsWithSignificantControl}"",
+      ""persons_with_significant_control_statements"" : ""{_companyProfile.Links.PersonsWithSignificantControlStatements}"",
+      ""registers"" : ""{_companyProfile.Links.Registers}"",
+      ""self"" : ""{_companyProfile.Links.Self}""
+   }},
    ""officer_summary"" : {{
       ""active_count"" : {_companyProfile.OfficerSummary.ActiveCount},
       ""officers"" : [
@@ -63,6 +86,9 @@ namespace CompaniesHouse.Tests.ResourceBuilders
       ],
       ""resigned_count"" : {_companyProfile.OfficerSummary.ResignedCount}
    }},
+   ""previous_company_names"" : [
+      {string.Join(",", _companyProfile.PreviousCompanyNames.Select(GetPreviousCompanyNameJsonBlock).ToArray())}
+   ],
    ""registered_office_address"" : {{
       ""address_line_1"" : ""{_companyProfile.RegisteredOfficeAddress.AddressLine1}"",
       ""address_line_2"" : ""{_companyProfile.RegisteredOfficeAddress.AddressLine2}"",
@@ -96,6 +122,15 @@ namespace CompaniesHouse.Tests.ResourceBuilders
             ""name"" : ""{officer.Name}"",
             ""officer_role"" : ""{officer.OfficerRole}""
          }}";
+        }
+
+        private string GetPreviousCompanyNameJsonBlock(PreviousCompanyName name)
+        {
+            return $@"{{
+                ""name"" : ""{name.Name}"",
+                ""ceased_on"" : ""{name.CeasedOn:yyyy-MM-dd}"",
+                ""effective_from"" : ""{name.EffectiveFrom:yyyy-MM-dd}""
+            }}";
         }
     }
 }

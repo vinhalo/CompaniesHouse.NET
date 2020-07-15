@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using CompaniesHouse.Request;
 using CompaniesHouse.Response.Search.CompanySearch;
 using NUnit.Framework;
@@ -7,7 +8,9 @@ namespace CompaniesHouse.IntegrationTests.Tests.SearchingTests
 {
     [TestFixture("brighouse computers")]
     [TestFixture("British Gas")]
-	public class CompanySearchTests
+    [TestFixture("Bay Horse")]
+
+    public class CompanySearchTests
     {
         private readonly string _query;
         private CompaniesHouseClient _client;
@@ -27,9 +30,10 @@ namespace CompaniesHouse.IntegrationTests.Tests.SearchingTests
         }
 
         [SetUp]
-        public void WhenSearchingForACompany()
+        public async Task WhenSearchingForACompany()
         {
-            _result = _client.SearchCompanyAsync(new SearchRequest() { Query = _query }).Result;
+            _result = await _client.SearchCompanyAsync(new SearchRequest() { Query = _query, StartIndex = 0, ItemsPerPage = 100 })
+                .ConfigureAwait(false);
         }
 
         [Test]

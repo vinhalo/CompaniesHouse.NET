@@ -20,7 +20,7 @@ namespace CompaniesHouse.Tests.ResourceBuilders
 
         public DateTime DateOfCreation { get; set; }
 
-        public DateTime DateOfDissolution { get; set; }
+        public DateTime DateOfCessation { get; set; }
 
         public bool UndeliverableRegisteredOfficeAddress { get; set; }
 
@@ -42,7 +42,7 @@ namespace CompaniesHouse.Tests.ResourceBuilders
 
         public bool HasCharges { get; set; }
 
-        public PreviousCompanyNames[] PreviousCompanyNames { get; set; }
+        public PreviousCompanyName[] PreviousCompanyNames { get; set; }
 
         public ConfirmationStatement ConfirmationStatement { get; set; }
 
@@ -51,5 +51,9 @@ namespace CompaniesHouse.Tests.ResourceBuilders
         public OfficerSummary OfficerSummary { get; set; }
 
         public bool RegisteredOfficeIsInDispute { get; set; }
+
+        public CompanyProfileLinks Links { get; set; }
+
+        public CompanyProfileBranchCompanyDetails BranchCompanyDetails { get; set; }
     }
 }

@@ -43,9 +43,9 @@ namespace CompaniesHouse.Response.CompanyProfile
         [JsonProperty(PropertyName = "date_of_creation")]
         public DateTime? DateOfCreation { get; set; }
 
-        [JsonProperty(PropertyName = "date_of_dissolution")]
+        [JsonProperty(PropertyName = "date_of_cessation")]
         [JsonConverter(typeof(OptionalDateJsonConverter))]
-        public DateTime? DateOfDissolution { get; set; }
+        public DateTime? DateOfCessation { get; set; }
 
         [JsonProperty(PropertyName = "has_been_liquidated")]
         public bool? HasBeenLiquidated { get; set; }
@@ -67,8 +67,11 @@ namespace CompaniesHouse.Response.CompanyProfile
         [JsonConverter(typeof(OptionalDateJsonConverter))]
         public DateTime? LastFullMembersListDate { get; set; }
 
-        [JsonProperty(PropertyName = "officer_summary")]
-        public OfficerSummary OfficerSummary { get; set; }
+        [JsonProperty(PropertyName = "links")]
+        public CompanyProfileLinks Links { get; set; }
+
+        [JsonProperty(PropertyName = "previous_company_names")]
+        public PreviousCompanyName[] PreviousCompanyNames { get; set; }
 
         [JsonProperty(PropertyName = "registered_office_address")]
         public Address RegisteredOfficeAddress { get; set; }
@@ -81,5 +84,8 @@ namespace CompaniesHouse.Response.CompanyProfile
 
         [JsonProperty(PropertyName = "undeliverable_registered_office_address")]
         public bool? UndeliverableRegisteredOfficeAddress { get; set; }
+
+        [JsonProperty(PropertyName = "branch_company_details")]
+        public BranchCompanyDetails BranchCompanyDetails { get; set; }
     }
 }

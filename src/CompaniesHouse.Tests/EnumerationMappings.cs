@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using CompaniesHouse.Response;
 using CompaniesHouse.Response.CompanyProfile;
+using CompaniesHouse.Response.Officers;
+using CompaniesHouse.Response.PersonsWithSignificantControl;
 
 namespace CompaniesHouse.Tests
 {
@@ -23,8 +25,9 @@ namespace CompaniesHouse.Tests
             {"partial-exemption", LastAccountsType.PartialExemption},
             {"audit-exemption-subsidiary", LastAccountsType.AuditExemptionSubsidiary},
             {"filing-exemption-subsidiary", LastAccountsType.FilingExemptionSubsidiary},
-            {"micro-entity", LastAccountsType.MicroEntity}
-        };
+            {"micro-entity", LastAccountsType.MicroEntity},
+            {"unaudited-abridged", LastAccountsType.UnauditedAbridged}
+    };
 
         public static readonly IReadOnlyDictionary<string, CompanyStatus> PossibleCompanyStatuses = new Dictionary
             <string, CompanyStatus>()
@@ -141,8 +144,11 @@ namespace CompaniesHouse.Tests
         public static readonly IReadOnlyDictionary<string, FilingSubcategory> PossibleFilingSubcategories = new Dictionary
             <string, FilingSubcategory>()
         {
-            {"resolution", FilingSubcategory.Resolution}
-        };
+            {"resolution", FilingSubcategory.Resolution},
+            {"document-replacement", FilingSubcategory.DocumentReplacement},
+            {"statements", FilingSubcategory.Statements},
+            {"voluntary-arrangement", FilingSubcategory.VoluntaryArrangement}
+    };
 
         public static readonly IReadOnlyDictionary<string, FilingCategory> PossibleFilingCategories = new Dictionary
             <string, FilingCategory>()
@@ -160,7 +166,19 @@ namespace CompaniesHouse.Tests
             {"resolution", FilingCategory.Resolution},
             {"confirmation-statement", FilingCategory.ConfirmationStatement},
             {"persons-with-significant-control", FilingCategory.PersonsWithSignificantControl},
-            {"restoration", FilingCategory.Restoration }
+            {"restoration", FilingCategory.Restoration },
+            {"return", FilingCategory.Return },
+            {"other", FilingCategory.Other }
         };
+
+        public static readonly IReadOnlyDictionary<string, PersonWithSignificantControlKind> PossiblePersonWithSignificantControlKinds = new Dictionary
+              <string, PersonWithSignificantControlKind>()
+        {
+            {"corporate-entity-person-with-significant-control", PersonWithSignificantControlKind.CorporateEntityPersonWithSignificantControl},
+            {"individual-person-with-significant-control", PersonWithSignificantControlKind.IndividualPersonWithSignificantControl},
+            {"super-secure-person-with-significant-control", PersonWithSignificantControlKind.IndividualPersonWithSignificantControl},
+            {"legal-person-person-with-significant-control", PersonWithSignificantControlKind.IndividualPersonWithSignificantControl},
+        };
+
     }
 }

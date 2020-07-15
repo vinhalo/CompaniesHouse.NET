@@ -68,5 +68,15 @@ namespace CompaniesHouse.Response
 
         [EnumMember(Value = "restoration")]
         Restoration,
+
+        [EnumMember(Value = "return")]
+        Return,
+
+        [EnumMember(Value = "other")]
+        Other,
+
+        [EnumMember(Value = "court-order")]
+        CourtOrder,
+
     }
 }

@@ -1,15 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard1.1;net45</TargetFrameworks>
+    <TargetFrameworks>netstandard1.1;netstandard2.0;net45</TargetFrameworks>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
   </PropertyGroup>
   
-  <PropertyGroup Condition="'$(TargetFramework)' == 'net45'">
-    <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(TargetFramework)' == 'netstandard1.1'">
-    <TargetFrameworkIdentifier>.NETStandard</TargetFrameworkIdentifier>
-  </PropertyGroup>
   
   <PropertyGroup>
     <Title>CompaniesHouse.NET</Title>
@@ -21,25 +20,31 @@
     <Description>
       A simple .NET API client wrapper for CompaniesHouse
     </Description>
-    <Copyright>Copyright © Kevsoft 2017</Copyright>
+    <Copyright>Copyright © Kevsoft 2020</Copyright>
   </PropertyGroup>
 
   <PropertyGroup>
     <PackageTags>CompaniesHouse;Registrar;Kevsoft;API;REST;WebService</PackageTags>
     <PackageIconUrl>https://raw.githubusercontent.com/kevbite/CompaniesHouse.NET/master/companies-house.jpg</PackageIconUrl>
+    <PackageIcon>companies-house.jpg</PackageIcon>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/kevbite/CompaniesHouse.NET</PackageProjectUrl>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://github.com/kevbite/CompaniesHouse.NET</RepositoryUrl>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Include="..\..\companies-house.jpg" Pack="true" PackagePath=""/>
+  </ItemGroup>
+
   <ItemGroup Condition="'$(TargetFramework)' == 'net45'">
-    <PackageReference Include="newtonsoft.json" Version="10.0.2" />
     <PackageReference Include="Microsoft.Net.Http" Version="2.2.29" />
   </ItemGroup>
-  
-  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard1.1'">
-    <PackageReference Include="newtonsoft.json" Version="10.0.2" />
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="10.0.2" />
   </ItemGroup>
 
 </Project>

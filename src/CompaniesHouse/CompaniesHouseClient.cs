@@ -1,12 +1,16 @@
 ﻿using System;
+using System.IO;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using CompaniesHouse.Request;
+using CompaniesHouse.Response.Appointments;
 using CompaniesHouse.Response.CompanyFiling;
 using CompaniesHouse.Response.CompanyProfile;
+using CompaniesHouse.Response.Document;
 using CompaniesHouse.Response.Insolvency;
 using CompaniesHouse.Response.Officers;
+using CompaniesHouse.Response.PersonsWithSignificantControl;
 using CompaniesHouse.Response.Search.AllSearch;
 using CompaniesHouse.Response.Search.CompanySearch;
 using CompaniesHouse.Response.Search.DisqualifiedOfficersSearch;
@@ -22,6 +26,11 @@ namespace CompaniesHouse
         private readonly ICompaniesHouseCompanyFilingHistoryClient _companiesHouseCompanyFilingHistoryClient;
         private readonly ICompaniesHouseOfficersClient _companiesHouseOfficersClient;
         private readonly ICompaniesHouseCompanyInsolvencyInformationClient _companiesHouseCompanyInsolvencyInformationClient;
+        private readonly ICompaniesHouseAppointmentsClient _companiesHouseCompanyAppointmentsClient;
+        private readonly ICompaniesHouseDocumentMetadataClient _companiesHouseDocumentMetadataClient;
+        private readonly ICompaniesHouseDocumentClient _companiesHouseDocumentClient;
+        private readonly ICompaniesHousePersonsWithSignificantControlClient _companiesHousePersonsWithSignificantControlClient;
+
         private readonly HttpClient _httpClient;
 
         public CompaniesHouseClient(ICompaniesHouseSettings settings)
@@ -34,6 +43,11 @@ namespace CompaniesHouse
             _companiesHouseCompanyFilingHistoryClient = new CompaniesHouseCompanyFilingHistoryClient(_httpClient, new CompanyFilingHistoryUriBuilder());
             _companiesHouseOfficersClient = new CompaniesHouseOfficersClient(_httpClient, new OfficersUriBuilder());
             _companiesHouseCompanyInsolvencyInformationClient = new CompaniesHouseCompanyInsolvencyInformationClient(_httpClient);
+            _companiesHouseCompanyAppointmentsClient = new CompaniesHouseAppointmentsClient(_httpClient);
+            var documentUriBuilder = new DocumentUriBuilder();
+            _companiesHouseDocumentMetadataClient = new CompaniesHouseDocumentMetadataClient(_httpClient, documentUriBuilder);
+            _companiesHouseDocumentClient = new CompaniesHouseDocumentClient(_httpClient, documentUriBuilder);
+			_companiesHousePersonsWithSignificantControlClient = new CompaniesHousePersonsWithSignificantControlClient(_httpClient, new PersonsWithSignificantControlBuilder());
         }
 
         public Task<CompaniesHouseClientResponse<CompanySearch>> SearchCompanyAsync(SearchRequest request, CancellationToken cancellationToken = default(CancellationToken))
@@ -79,6 +93,27 @@ namespace CompaniesHouse
         public void Dispose()
         {
             _httpClient.Dispose();
+        }
+
+        public Task<CompaniesHouseClientResponse<Appointments>> GetAppointmentsAsync(string officerId, int startIndex = 0, int pageSize = 25, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return _companiesHouseCompanyAppointmentsClient.GetAppointmentsAsync(officerId, startIndex, pageSize,
+                cancellationToken);
+        }
+
+        public Task<CompaniesHouseClientResponse<DocumentMetadata>> GetDocumentMetadataAsync(string documentId, CancellationToken caneCancellationToken = default)
+        {
+            return _companiesHouseDocumentMetadataClient.GetDocumentMetadataAsync(documentId, caneCancellationToken);
+        }
+
+        public Task<CompaniesHouseClientResponse<DocumentDownload>> DownloadDocumentAsync(string documentId, CancellationToken cancellationToken = default)
+        {
+            return _companiesHouseDocumentClient.DownloadDocumentAsync(documentId, cancellationToken);
+        }
+		
+		public Task<CompaniesHouseClientResponse<PersonsWithSignificantControl>> GetPersonsWithSignificantControlAsync(string companyNumber, int startIndex = 0, int pageSize = 25, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return _companiesHousePersonsWithSignificantControlClient.GetPersonsWithSignificantControlAsync(companyNumber, startIndex, pageSize, cancellationToken);
         }
     }
 }

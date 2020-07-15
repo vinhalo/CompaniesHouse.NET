@@ -4,6 +4,7 @@ namespace CompaniesHouse.Response
 {
     public enum CompanyType
     {
+        [EnumMember(Value = "")]
         None = 0,
 
         [EnumMember(Value = "private-unlimited")]
@@ -99,6 +100,8 @@ namespace CompaniesHouse.Response
 		[EnumMember(Value = "scottish-charitable-incorporated-organisation")]
 		ScottishCharitableIncorporatedOrganisation,
 
+	    [EnumMember(Value = "further-education-or-sixth-form-college-corporation")]
+        FurtherEducationOrSixthFormCollegeCorporation,
 
 	}
 }

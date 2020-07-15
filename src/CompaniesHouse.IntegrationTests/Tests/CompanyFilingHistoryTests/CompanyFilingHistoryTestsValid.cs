@@ -25,7 +25,11 @@ namespace CompaniesHouse.IntegrationTests.Tests.CompanyFilingHistoryTests
                 "00445790", // Tesco
                 "00002065", // Lloyds Bank PLC
                 "09965459",  // Amazebytes
-                "06768813"  // TEST & COOL LTD
+                "06768813",  // TEST & COOL LTD,
+                "00059337",
+                "SC171417",
+                "09018331",
+                "RS007401"
             };
         }
 
@@ -38,7 +42,8 @@ namespace CompaniesHouse.IntegrationTests.Tests.CompanyFilingHistoryTests
             CompaniesHouseClientResponse<CompanyFilingHistory> result;
             do
             {
-                result = await _client.GetCompanyFilingHistoryAsync(_companyNumber, page++ * size, size);
+                result = await _client.GetCompanyFilingHistoryAsync(_companyNumber, page++ * size, size)
+                    .ConfigureAwait(false);
                 _results.AddRange(result.Data.Items);
             } while (result.Data.Items.Any());
         }

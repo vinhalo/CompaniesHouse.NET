@@ -1,7 +1,8 @@
 ﻿using System;
-using System.Collections.Specialized;
-using System.Web;
+using System.Collections.Generic;
+using System.Linq;
 using NUnit.Framework;
+
 
 namespace CompaniesHouse.Tests.UriBuilders.SearchUriBuilderTests
 {
@@ -27,7 +28,7 @@ namespace CompaniesHouse.Tests.UriBuilders.SearchUriBuilderTests
             {
                 var query = GetQuery();
 
-                Assert.That(query["items_per_page"], Is.Null);
+                Assert.That(query.ContainsKey("items_per_page"), Is.False);
             }
 
             public void TheUriQueryStringContainsTheItemsPerPage()
@@ -48,17 +49,21 @@ namespace CompaniesHouse.Tests.UriBuilders.SearchUriBuilderTests
             {
                 var query = GetQuery();
 
-                Assert.That(query["start_index"], Is.Null);
+                Assert.That(query.ContainsKey("start_index"), Is.False);
             }
 
-            protected NameValueCollection GetQuery()
+            protected Dictionary<string, string> GetQuery()
             {
-                var uri = new Uri(_searchUriBuilderTestsBase._baseUri, _searchUriBuilderTestsBase._actualUri);
-                var query = HttpUtility.ParseQueryString(uri.Query);
-                return query;
+                return new Uri(_searchUriBuilderTestsBase._baseUri, _searchUriBuilderTestsBase._actualUri)
+                    .ToString()
+                    .Split('?')
+                    .Last()
+                    .Split('&')
+                    .ToDictionary(GetKey, GetValue);
+
+                string GetKey(string keyValue) => keyValue.Split('=')[0];
+                string GetValue(string keyValue) => Uri.UnescapeDataString(keyValue.Split('=')[1]);
             }
         }
-
-
     }
 }

@@ -3,9 +3,13 @@
     only:
       - master
 
-  version: 4.0.4
+  version: 7.8.3
   install:
     - ps : .\environment-install.ps1
+
+  environment:
+    api_key:
+      secure: Saoyv+h9vvZ5D6YbH4WPVVDQcubZ9asXQ6sFDjYFCTfwbFmTL2d9pPYwQByXg0LL
 
   assembly_info:
     assembly_version: '{version}'
@@ -14,7 +18,7 @@
     file: AssemblyInfo.*
     patch: true
 
-  image: Visual Studio 2017
+  image: Visual Studio 2019
 
   before_build:
     - ps : .\build-before_build.ps1
@@ -25,10 +29,6 @@
 
   after_build:
     - ps : dotnet pack .\src\CompaniesHouse\CompaniesHouse.csproj -c Release /p:Version=$env:APPVEYOR_BUILD_VERSION
-
-  environment:
-    CompaniesHouseApiKey:
-      secure: MyplhKXpS1d9yob+xCzzJvgePFVi4ts5sPuMGWS7k6mOnVl1EcDAR+mpGOSSQWUQ
 
   configuration: Release
 
@@ -41,9 +41,11 @@
       - '**\*.Tests.dll'
       - '**\*.FunctionalTests.dll'
       - '**\*.IntegrationTests.dll'
+      - '**\*.ScenarioTests.dll'
 
   artifacts:
     - path: '**\bin\**\*.nupkg'
+    - path: '**\bin\**\*.snupkg'
 
   deploy:
     - provider: Environment
@@ -59,6 +61,10 @@
   install:
     - ps : .\environment-install.ps1
 
+  environment:
+    api_key:
+      secure: Saoyv+h9vvZ5D6YbH4WPVVDQcubZ9asXQ6sFDjYFCTfwbFmTL2d9pPYwQByXg0LL
+
   assembly_info:
     assembly_version: '{version}'
     assembly_file_version: '{version}'
@@ -66,7 +72,7 @@
     file: AssemblyInfo.*
     patch: true
 
-  image: Visual Studio 2017
+  image: Visual Studio 2019
 
   before_build:
     - ps : .\build-before_build.ps1
@@ -77,10 +83,6 @@
 
   after_build:
     - ps : dotnet pack .\src\CompaniesHouse\CompaniesHouse.csproj -c Release /p:Version=$env:APPVEYOR_BUILD_VERSION
-
-  environment:
-    CompaniesHouseApiKey:
-      secure: MyplhKXpS1d9yob+xCzzJvgePFVi4ts5sPuMGWS7k6mOnVl1EcDAR+mpGOSSQWUQ
 
   configuration: Release
 
@@ -96,3 +98,4 @@
 
   artifacts:
     - path: '**\bin\**\*.nupkg'
+    - path: '**\bin\**\*.snupkg'
